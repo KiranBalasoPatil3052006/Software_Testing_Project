@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Animated Todo List</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+    color: #fff;
+  }
+  .container {
+    background: #2c2654cc;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 480px;
+    padding: 30px 25px 40px;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.5);
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+  }
+  .input-group {
+    display: flex;
+    gap: 12px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: box-shadow 0.3s ease;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 10px #a18affaa;
+    background: #3b3678;
+    color: #fff;
+  }
+  button {
+    background: #7f56ff;
+    border: none;
+    color: white;
+    padding: 0 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 15px #865cffaa;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: #674bca;
+    box-shadow: 0 8px 20px #5b3fc8dd;
+  }
+  button:active {
+    transform: scale(0.95);
+  }
+
+  .list {
+    margin-top: 28px;
+    list-style: none;
+    padding: 0;
+  }
+
+  .list-item {
+    background: #473e99dd;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 10px 18px rgba(38, 32, 117, 0.4);
+    transform-origin: left;
+    transition:
+      background-color 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+  .list-item.completed {
+    background: #4caf5080;
+    text-decoration: line-through;
+    color: #d6e9ca;
+    box-shadow: 0 10px 20px #88e08eaa;
+  }
+
+  .list-item input[type="text"] {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    cursor: text;
+  }
+  .list-item input[type="text"]:focus {
+    outline: none;
+    background: #5d569f88;
+    border-radius: 6px;
+    padding: 2px 8px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-icon {
+    cursor: pointer;
+    border: none;
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      transform 0.2s ease;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-icon.right {
+    background-color: #4caf50cc;
+    color: #fff;
+  }
+  .btn-icon.right:hover {
+    background-color: #3e8e41;
+    transform: scale(1.15);
+  }
+  .btn-icon.wrong {
+    background-color: #f44336cc;
+    color: #fff;
+  }
+  .btn-icon.wrong:hover {
+    background-color: #bc2c28;
+    transform: scale(1.15);
+  }
+  .btn-icon.delete {
+    background-color: #e1a3a3cc;
+    color: #520000;
+  }
+  .btn-icon.delete:hover {
+    background-color: #9d4d4d;
+    color: white;
+    transform: scale(1.2);
+  }
+
+  .fade-enter {
+    animation: fadeInScale 0.35s ease forwards;
+  }
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.75) translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+    }
+  }
+
+  .fade-exit {
+    animation: fadeOutScale 0.3s ease forwards;
+  }
+  @keyframes fadeOutScale {
+    0% {
+      opacity: 1;
+      transform: scale(1) translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.7) translateX(20px);
+      height: 0;
+      margin-bottom: 0;
+      padding: 0;
+    }
+  }
+
+  .clear-btn {
+    display: block;
+    margin: 30px auto 0;
+    background-color: #ff5e5e;
+    box-shadow: 0 5px 15px #d84444cc;
+  }
+  .clear-btn:hover {
+    background-color: #b63535;
+    box-shadow: 0 9px 25px #a02f2fdd;
+  }
+</style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="Todo List Application">
+    <h1>My Todo List</h1>
+    <div class="input-group">
+      <input id="todo-input" type="text" aria-label="Add new todo" placeholder="Add a new todo..." autocomplete="off" />
+      <button id="add-btn" aria-label="Add todo">Add</button>
+    </div>
+    <ul id="todo-list" class="list" aria-live="polite" aria-relevant="additions removals"></ul>
+    <button id="clear-btn" class="clear-btn" aria-label="Clear all todos">Clear All</button>
+  </div>
+
+<script>
+  (() => {
+    const todoInput = document.getElementById('todo-input');
+    const addBtn = document.getElementById('add-btn');
+    const todoList = document.getElementById('todo-list');
+    const clearBtn = document.getElementById('clear-btn');
+
+    // Helpers for animation and DOM
+    function animateAdd(el) {
+      el.classList.add('fade-enter');
+      setTimeout(() => el.classList.remove('fade-enter'), 350);
+    }
+    function animateRemove(el) {
+      return new Promise(resolve => {
+        el.classList.add('fade-exit');
+        el.addEventListener('animationend', () => resolve());
+      });
+    }
+
+    // Create a todo list item element
+    function createTodoItem(text) {
+      const li = document.createElement('li');
+      li.className = 'list-item';
+      li.setAttribute('tabindex', '-1');
+
+      // Editable text input for modification
+      const todoText = document.createElement('input');
+      todoText.type = 'text';
+      todoText.value = text;
+      todoText.setAttribute('aria-label', 'Todo text editable');
+      todoText.spellcheck = false;
+
+      // Buttons container
+      const btnGroup = document.createElement('div');
+      btnGroup.className = 'btn-group';
+
+      // Right (complete) button
+      const btnRight = document.createElement('button');
+      btnRight.className = 'btn-icon right';
+      btnRight.setAttribute('aria-label', 'Mark as completed');
+      btnRight.title = 'Mark as completed';
+      btnRight.innerHTML = '✔️';
+
+      // Wrong (incomplete) button
+      const btnWrong = document.createElement('button');
+      btnWrong.className = 'btn-icon wrong';
+      btnWrong.setAttribute('aria-label', 'Mark as not completed');
+      btnWrong.title = 'Mark as not completed';
+      btnWrong.innerHTML = '❌';
+
+      // Delete button
+      const btnDelete = document.createElement('button');
+      btnDelete.className = 'btn-icon delete';
+      btnDelete.setAttribute('aria-label', 'Delete todo');
+      btnDelete.title = 'Delete todo';
+      btnDelete.innerHTML = '🗑️';
+
+      // Append buttons
+      btnGroup.appendChild(btnRight);
+      btnGroup.appendChild(btnWrong);
+      btnGroup.appendChild(btnDelete);
+
+      li.appendChild(todoText);
+      li.appendChild(btnGroup);
+
+      // Event listeners for buttons
+      btnRight.addEventListener('click', () => {
+        li.classList.add('completed');
+      });
+
+      btnWrong.addEventListener('click', () => {
+        li.classList.remove('completed');
+      });
+
+      btnDelete.addEventListener('click', async () => {
+        await animateRemove(li);
+        li.remove();
+      });
+
+      return li;
+    }
+
+    // Add new todo item handler
+    function addTodo() {
+      const text = todoInput.value.trim();
+      if (text === '') {
+        todoInput.focus();
+        return;
+      }
+      const todoItem = createTodoItem(text);
+      todoList.appendChild(todoItem);
+      animateAdd(todoItem);
+      todoInput.value = '';
+      todoInput.focus();
+    }
+
+    // Clear all handler
+    async function clearAll() {
+      if (!todoList.hasChildNodes()) return;
+      // Animate each item leaving in sequence
+      const items = [...todoList.children];
+      for (const item of items) {
+        await animateRemove(item);
+        item.remove();
+      }
+      todoInput.focus();
+    }
+
+    addBtn.addEventListener('click', addTodo);
+
+    todoInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        addTodo();
+      }
+    });
+
+    clearBtn.addEventListener('click', clearAll);
+
+  })();
+</script>
+</body>
+</html>
+
