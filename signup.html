@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #222;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      width: 350px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #00aaff;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 50vh;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    label {
+      font-size: 14px;
+    }
+
+    button {
+      width: 53.1vh;
+      padding: 10px;
+      margin-top: 15px;
+      background: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #008fcc;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .link a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+    #signupMessage{
+      text-align: center;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="form-container">
+    <h2 id="signupMessage"></h2>
+
+    <h2>Sign Up</h2>
+    <input type="text" id="signupName" placeholder="Full Name" required>
+    <input type="email" id="signupEmail" placeholder="Email" required>
+    <input type="password" id="signupPassword" placeholder="Password" required>
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    <label><input type="checkbox" id="terms"> I agree to Terms</label>
+    <button id="signupBtn">Create Account</button>
+
+    <div class="link">
+      Already have an account? <a href="index.html" id="loginBtn">Login</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupBtn').addEventListener('click', function () {
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const terms = document.getElementById('terms').checked;
+
+      const messageElement = document.getElementById('signupMessage');
+
+      if (!email.includes("@")) {
+        messageElement.textContent = "Invalid email";
+        messageElement.style.color = "red";
+        return;
+      }
+
+      if (password.length < 8 || confirmPassword.length < 8) {
+        messageElement.textContent = "Password must be at least 8 characters";
+        messageElement.style.color = "red";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        messageElement.textContent = "Passwords do not match";
+        messageElement.style.color = "red";
+        return;
+      }
+
+      if (!terms) {
+        messageElement.textContent = "You must agree to the terms";
+        messageElement.style.color = "red";
+        return;
+      }
+
+      messageElement.textContent = "Sign up is successful!";
+      messageElement.style.color = "green";
+    });
+
+  </script>
+</body>
+
+</html>

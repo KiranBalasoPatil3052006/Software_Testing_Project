@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .form-container {
+      background: #222;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      width: 350px;
+    }
+
+    .form-container h2 {
+      text-align: center;
+      color: #00aaff;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 50vh;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      background: #333;
+      color: #fff;
+    }
+
+    button {
+      width: 53.1vh;
+      padding: 10px;
+      margin-top: 15px;
+      background: #00aaff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #008fcc;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .link a {
+      color: #00aaff;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    
+    <h2 id="signupMessage"></h2>
+    <h2 id="logintitle">Login</h2>
+    <input type="email" id="loginEmail" placeholder="Email" required>
+    <input type="password" id="loginPassword" placeholder="Password" required>
+    <button id="loginBtn">Login</button>
+
+    <div class="link">
+      Don't have an account? <a href="signup.html" id="toggleLink">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginBtn').addEventListener('click', function () {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const messageElement = document.getElementById('signupMessage');
+
+      if (!email.includes("@")) {
+        messageElement.textContent = "Invalid Mail"
+        messageElement.style.color = "red"
+        return;
+      }
+
+      if (password.length < 8) {
+        messageElement.textContent = "Password must above 8 digit"
+        messageElement.style.color = "red"
+        return;
+      }
+      if(password == " " || email == " "){
+        messageElement.textContent = "fill out all details"
+        messageElement.style.color = "red"
+        return;
+      }
+
+      messageElement.textContent = "Successfully Logined"
+      messageElement.color = "green"
+
+
+      window.location.href = "todopage.html";
+    });
+  </script>
+</body>
+</html>
